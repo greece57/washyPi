@@ -22,7 +22,7 @@ namespace TestApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        const int userRange = 100;
+        const int userRange = 75;
         const string accountName = "washydiag606";
         const string accountKey = "8QVb2d+vRjhuSr5DnNUix9Tii77//+ItK8kh4KDRDDJxy8cmW4XV+9oPhhkZ6ZSB96AO1SV/EPqHdbnvE5OvUg==";
         const string containerName = "picture-storage";
@@ -159,11 +159,34 @@ namespace TestApp
 
             IRestResponse response = await client.Execute(request);
             var content = response.Content;
-            screen.SetText(content);
-            if (content == "true")
-                screen.SetBacklightRgb(0, 200, 0);
-            else
-                screen.SetBacklightRgb(200, 0, 0);
+            setScreen(content);
+        }
+
+        private void setScreen(string content)
+        {
+            switch (content)
+            {
+                case "not-available":
+                    screen.SetText("You don't have a reservation");
+                    screen.SetBacklightRgb(200, 0, 0);
+                    break;
+                case "\"no-face\"":
+                    screen.SetText("Da is no face on dat pic!");
+                    screen.SetBacklightRgb(200, 0, 0);
+                    break;
+                case "no-canidate":
+                    screen.SetText("I don't know your face");
+                    screen.SetBacklightRgb(200, 0, 0);
+                    break;
+                case "user-not-available":
+                    screen.SetText("WTF?!");
+                    screen.SetBacklightRgb(250, 0, 0);
+                    break;
+                default:
+                    screen.SetText("Happy washing " + content);
+                    screen.SetBacklightRgb(0, 200, 0);
+                    break;
+            }
         }
 
         private void blink(ILed led)
